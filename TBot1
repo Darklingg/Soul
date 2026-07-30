@@ -1,0 +1,70 @@
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+import logging
+from datetime import datetime, timezone
+TELEGRAM_BOT_TOKEN = "Insert your bot token here, ok? Get it from @BotFather"
+
+
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+)
+logger = logging.getLogger(__name__)
+
+
+def get_season(month: int, day: int) -> str:
+    "Return the current meteorological season for the Northern Hemisphere / EU."
+    if (month == 12 and day >= 1) or month in (1, 2):
+        return "Winter."
+    elif month in (3, 4, 5):
+        return "Spring."
+    elif month in (6, 7, 8):
+        return "Summer."
+    else:
+        return "Autumn."
+
+
+async def cmd_time(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Show the current UTC time."""
+    now = datetime.now(timezone.utc)
+    await update.message.reply_text(
+        f"Current UTC time: <b>{now.strftime('%H:%M:%S')}</b>",
+        parse_mode="HTML",
+    )
+
+
+async def cmd_season(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Show current season, day, month, and year (EU / Northern Hemisphere)."""
+    now = datetime.now(timezone.utc)
+    season = get_season(now.month, now.day)
+    await update.message.reply_text(
+        f"{season}\n\n"
+        f"<b>Day:</b> {now.day}\n"
+        f"<b>Month:</b> {now.strftime('%B')} ({now.month})\n"
+        f"<b>Year:</b> {now.year}",
+        parse_mode="HTML",
+    )
+
+
+async def cmd_credits(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Show credits."""
+    await update.message.reply_text(
+        "Bot created by <b>@VSoulss</b>",
+        parse_mode="HTML",
+    )
+
+
+def main() -> None:
+    token = TELEGRAM_BOT_TOKEN
+
+    app = ApplicationBuilder().token(token).build()
+
+    app.add_handler(CommandHandler("time", cmd_time))
+    app.add_handler(CommandHandler("season", cmd_season))
+    app.add_handler(CommandHandler("credits", cmd_credits))
+
+    logger.info("Bot is running...")
+    app.run_polling()
+        asyncio.run(run())
+    except KeyboardInterrupt:
+        logger.info("Bot stopped.")
