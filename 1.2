@@ -1,0 +1,73 @@
+Первая Задача:
+
+public class Main {
+    public static void main(String[] args) {
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        long userNumber = scanner.nextLong();
+        
+        long lastDigit = userNumber % 10; 
+        
+        System.out.println(lastDigit);
+    }
+}
+
+Вторая Задача:
+
+public class Main {
+    public static void main(String[] args) {
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        long userNumber = scanner.nextLong();
+        long userSum = 0;
+        
+        while (userNumber > 0) {
+            long userNextNumber = userNumber % 10;
+            userNumber = userNumber / 10;
+            userSum = userSum + userNextNumber;
+        }
+        
+        System.out.println(userSum);
+    }
+}
+
+Третья Задача:
+
+public class Main {
+    public static void main(String[] args) {
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        long userNumber = scanner.nextLong();
+        System.out.println(userNumber + 2 - (userNumber % 2));
+    }
+}
+
+Четвертая Задача:
+
+public class Main {
+    public static void main(String[] args) {
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        long rubl = scanner.nextLong();
+        long kopeika = scanner.nextLong();
+        long amount = scanner.nextLong();
+
+    
+        long totalCost = (rubl * 100 + kopeika) * amount;
+        rubl = totalCost / 100; 
+        kopeika = totalCost % 100;
+
+        System.out.println(rubl + " " + kopeika);
+    }
+}
+
+Пятая Задача:
+
+public class Main {
+    public static void main(String[] args) {
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        long totalTime = scanner.nextLong();
+        
+        long userHours = (totalTime / 3600) % 24;
+        long userMinutes = (totalTime / 60) % 60;
+        long userSeconds = totalTime % 60;
+        
+        System.out.printf("%d:%02d:%02d\n", userHours, userMinutes, userSeconds);
+    }
+}
